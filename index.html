@@ -30,18 +30,15 @@
       gap: 10px;
     }
     .number-item {
-      background: yellow;
-      color: blue;
       padding: 8px 12px;
       border-radius: 5px;
-      background: #f0f0f0;
-      color: black;
+      background: yellow;
+      color: blue;
       min-width: 30px;
     }
     .number-drawn {
-      background: #ddd;
-      color: #444;
-      color: gray !important;
+      background: #ddd !important;
+      color: #444 !important;
     }
     #result {
       font-size: 60px;
@@ -77,6 +74,8 @@
     <button onclick="confirmReset()">Resetovat losování</button>
     <div id="resetConfirm"></div>
   </div>
+
+  <audio id="ding" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
 
   <script>
     let numbers = [];
@@ -119,6 +118,8 @@
 
         const el = document.getElementById("num-" + chosen);
         if (el) el.classList.add("number-drawn");
+
+        document.getElementById("ding").play();
       }, 3000);
     }
 
@@ -135,38 +136,5 @@
       location.reload();
     }
   </script>
-
-  <audio id="ding" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
-
-  <script>
-    function playSound() {
-      document.getElementById('ding').play();
-    }
-
-    // Modify drawNumber to include sound
-    const originalDrawNumber = drawNumber;
-    drawNumber = function() {
-      if (numbers.length === 0) {
-        document.getElementById("animation").innerText = "";
-        document.getElementById("result").innerText = "🎉 Hotovo!";
-        return;
-      }
-      document.getElementById("animation").innerText = "🎰 Losuji...";
-      document.getElementById("result").innerText = "";
-      setTimeout(() => {
-        const index = Math.floor(Math.random() * numbers.length);
-        const chosen = numbers.splice(index, 1)[0];
-        document.getElementById("animation").innerText = "";
-        document.getElementById("result").innerText = chosen;
-
-        const el = document.getElementById("num-" + chosen);
-        if (el) el.classList.add("number-drawn");
-
-        playSound(); // 🔊 play sound
-      }, 3000);
-    };
-  </script>
 </body>
-</html>
-
 </html>
