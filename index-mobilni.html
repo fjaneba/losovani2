@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>LOSOVÁNÍ POŘADOVÝCH ČÍSEL</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 20px;
+      background: #fff;
+      color: #000;
+    }
+    h2 {
+      font-size: 28px;
+      margin-bottom: 30px;
+    }
+    input, button {
+      font-size: 18px;
+      padding: 10px 20px;
+      max-width: 90%;
+      word-break: keep-all;
+      font-size: 16px;
+      padding: 5px 10px;
+      margin: 5px;
+    }
+    .number-list {
+      max-width: 100%;
+      word-wrap: break-word;
+      margin-top: 20px;
+      font-size: 20px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .number-item {
+      font-size: 20px;
+      flex: 0 0 auto;
+      text-align: center;
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 5px;
+      background: yellow;
+      color: blue;
+      min-width: 30px;
+    }
+    .number-drawn {
+      background: #ddd !important;
+      color: #444 !important;
+    }
+    #result {
+      font-size: 60px;
+      margin-top: 30px;
+    }
+    #animation {
+      font-size: 24px;
+      margin-top: 10px;
+      color: #555;
+    }
+    #resetConfirm {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>LOSOVÁNÍ POŘADOVÝCH ČÍSEL</h2>
+
+  <div id="setup">
+    <p>Nejprve nastavte rozsah pořadových čísel</p>
+    <label>Od: <input type="number" id="min" value="1" min="1"></label>
+    <label>Do: <input type="number" id="max" value="10" min="1"></label>
+    <br>
+    <button onclick="startDraw()">Nastavit rozsah</button>
+  </div>
+
+  <div id="numberDisplay" style="display:none;">
+    <div class="number-list" id="numberList"></div>
+    <button onclick="drawNumber()">🎲 Losuj</button>
+    <div id="animation"></div>
+    <div id="result"></div>
+    <br>
+    <button onclick="confirmReset()">Resetovat losování</button>
+    <div id="resetConfirm"></div>
+  </div>
+
+  <audio id="ding" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
+
+  <script>
+    let numbers = [];
+    let original = [];
+
+    function startDraw() {
+      const min = parseInt(document.getElementById("min").value);
+      const max = parseInt(document.getElementById("max").value);
+      numbers = [];
+      for (let i = min; i <= max; i++) numbers.push(i);
+      original = [...numbers];
+
+      document.getElementById("setup").style.display = "none";
+      document.getElementById("numberDisplay").style.display = "block";
+
+      const list = document.getElementById("numberList");
+      list.innerHTML = "";
+      numbers.forEach(num => {
+        const span = document.createElement("span");
+        span.innerText = num;
+        span.className = "number-item";
+        span.id = "num-" + num;
+        list.appendChild(span);
+      });
+    }
+
+    function drawNumber() {
+      if (numbers.length === 0) {
+        document.getElementById("animation").innerText = "";
+        document.getElementById("result").innerText = "🎉 Hotovo!";
+        return;
+      }
+      document.getElementById("animation").innerText = "🎰 Losuji...";
+      document.getElementById("result").innerText = "";
+      setTimeout(() => {
+        const index = Math.floor(Math.random() * numbers.length);
+        const chosen = numbers.splice(index, 1)[0];
+        document.getElementById("animation").innerText = "";
+        document.getElementById("result").innerText = chosen;
+
+        const el = document.getElementById("num-" + chosen);
+        if (el) el.classList.add("number-drawn");
+
+        document.getElementById("ding").play();
+      }, 3000);
+    }
+
+    function confirmReset() {
+      const confirmArea = document.getElementById("resetConfirm");
+      confirmArea.innerHTML = 'Opravdu chcete přerušit losování a začít znovu?<br><button onclick="resetAll()">Ano</button> <button onclick="cancelReset()">Ne</button>';
+    }
+
+    function cancelReset() {
+      document.getElementById("resetConfirm").innerHTML = "";
+    }
+
+    function resetAll() {
+      location.reload();
+    }
+  </script>
+</body>
+</html>
