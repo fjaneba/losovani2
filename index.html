@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="UTF-8">
   <title>LOSOVÁNÍ POŘADOVÝCH ČÍSEL</title>
   <style>
@@ -17,11 +18,17 @@
       margin-bottom: 30px;
     }
     input, button {
+      font-size: 18px;
+      padding: 10px 20px;
+      max-width: 90%;
+      word-break: keep-all;
       font-size: 16px;
       padding: 5px 10px;
       margin: 5px;
     }
     .number-list {
+      max-width: 100%;
+      word-wrap: break-word;
       margin-top: 20px;
       font-size: 20px;
       display: flex;
@@ -30,6 +37,10 @@
       gap: 10px;
     }
     .number-item {
+      font-size: 20px;
+      flex: 0 0 auto;
+      text-align: center;
+      display: inline-block;
       padding: 8px 12px;
       border-radius: 5px;
       background: yellow;
